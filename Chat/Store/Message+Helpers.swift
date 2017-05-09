@@ -11,15 +11,15 @@ import CoreData
 
 extension Message {
 
-    public class func entityName() -> String {
+    class func entityName() -> String {
         return "Message"
     }
     
-    public class func insert(into context: NSManagedObjectContext) -> Message {
+    class func insert(into context: NSManagedObjectContext) -> Message {
         return NSEntityDescription.insertNewObject(forEntityName: Message.entityName(), into: context) as! Message
     }
     
-    @nonobjc public class func messagesInChat(chatId: String) -> NSFetchRequest<Message> {
+    @nonobjc class func fetchRequest(forMessagesWithChatId chatId: String) -> NSFetchRequest<Message> {
         
         let fetchRequest: NSFetchRequest<Message> = Message.fetchRequest()
         
@@ -31,12 +31,11 @@ extension Message {
         return fetchRequest
     }
     
-    @nonobjc public class func message(messageId: String, senderId: String, chatId: String) -> NSFetchRequest<Message> {
+    @nonobjc class func fetchRequest(forMessageWithIdentity identity: MessageIdentity) -> NSFetchRequest<Message> {
         
         let fetchRequest: NSFetchRequest<Message> = Message.fetchRequest()
         
-        fetchRequest.predicate = NSPredicate(format: "id == %@ AND chatId == %@ AND senderId == %@",
-                                             messageId, chatId, senderId)
+        fetchRequest.predicate = identity.predicate
         fetchRequest.fetchLimit = 1
         
         let mostRecentMessageFirst = NSSortDescriptor(key: "timestamp", ascending: false)

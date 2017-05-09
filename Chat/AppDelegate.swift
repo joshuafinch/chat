@@ -11,23 +11,33 @@ import CoreData
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    struct State {
+        let coreData: CoreDataProtocol
+        let coreDataMessageManager: CoreDataMessageManaging
+        let messageImporter: MessageImporting
+
+        func buildChat(chatId: String) -> ChatViewController {
+            let chatService = ChatService(chatId: chatId, senderId: "senderId", messageImporter: messageImporter)
+
+            let chatViewController = ChatViewController()
+            chatViewController.state = ChatViewController.State(chatService: chatService,
+                                                                persistentContainer: coreData.persistentContainer)
+            coreData.add(persistentContainerChangeDelegate: chatViewController)
+
+            return chatViewController
+        }
+    }
+
     var window: UIWindow?
-    
-    private var coreData: CoreData?
+
+    var state: State?
     
     // MARK: - Application Lifecycle
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        setup()
-        
-        let mainStoryboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        let rootViewController = mainStoryboard.instantiateInitialViewController()
-        
-        window = UIWindow()
-        window?.rootViewController = rootViewController
-        window?.makeKeyAndVisible()
+        setupWindow()
         
         return true
     }
@@ -52,26 +62,59 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        
+        state?.coreData.saveViewContext()
     }
 
     // MARK: - Private
-    
-    private func setup() {
-        coreData = CoreData(name: "Model", storeType: .SQLite, loadPersistentStoresCompletionHandler: { [weak self] (success) in
-            if success {
-                self?.loadedPersistentStores()
-            } else {
-                self?.couldNotLoadPersistentStores()
+
+    private func setupState() {
+
+        guard state == nil else {
+            // State is already setup
+            return
+        }
+
+        if state == nil {
+
+            let coreData = createCoreData()
+
+            let coreDataMessageManager = CoreDataMessageManager(persistentContainer: coreData.persistentContainer)
+            coreData.add(persistentContainerChangeDelegate: coreDataMessageManager)
+
+            let messageImporter = MessageImporter(label: "message.importer", coreDataMessageManager: coreDataMessageManager)
+
+            state = State(coreData: coreData, 
+                          coreDataMessageManager: coreDataMessageManager, 
+                          messageImporter: messageImporter)
+        }
+    }
+
+    private func createCoreData() -> CoreDataProtocol {
+        let coreData = CoreData(name: "Model", storeType: .SQLite, loadPersistentStoresCompletionHandler: { (success) in
+            if !success {
+                // TODO: Could not load core data persistent stores, unsafe to do other core data operations
+                // This indicates a significant error we may want to make the user aware of.
             }
         })
+
+        return coreData
     }
-    
-    private func loadedPersistentStores() {
-        // Loaded core data persistent stores, safe to do other core data operations
-    }
-    
-    private func couldNotLoadPersistentStores() {
-        // Could not load core data persistent stores, unsafe to do other core data operations
+
+    private func setupWindow() {
+
+        setupState()
+
+        guard let state = state else {
+            return
+        }
+
+        let chatViewController = state.buildChat(chatId: "chatId")
+        let navigationController = UINavigationController(rootViewController: chatViewController)
+
+        window = UIWindow()
+        window?.rootViewController = navigationController
+        window?.makeKeyAndVisible()
     }
 }
 

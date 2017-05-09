@@ -12,11 +12,6 @@ import XCTest
 
 @testable import Chat
 
-private class CoreDataDeinitTest: CoreData {
-    var deinitCalled: (() -> Void)?
-    deinit { deinitCalled?() }
-}
-
 class CoreDataTests: XCTestCase {
  
     private var coreData: CoreData?
@@ -69,31 +64,6 @@ class CoreDataTests: XCTestCase {
             }
         })
 
-        waitForExpectations(timeout: 1.0, handler: nil)
-    }
-    
-    func testCoreDataDeinit() {
-        
-        let expectLoadedStores = expectation(description: "Loads in memory persistent stores successfully")
-        
-        var coreData: CoreDataDeinitTest? = CoreDataDeinitTest(name: "Model", storeType: .InMemory, loadPersistentStoresCompletionHandler: { success in
-            if success {
-                expectLoadedStores.fulfill()
-            } else {
-                XCTFail("Could not load persistent stores successfully")
-            }
-        })
-        
-        waitForExpectations(timeout: 1.0, handler: nil)
-        
-        let expectDeinit = expectation(description: "Deinit CoreData")
-        
-        coreData?.deinitCalled = {
-            expectDeinit.fulfill()
-        }
-        
-        coreData = nil
-        
         waitForExpectations(timeout: 1.0, handler: nil)
     }
 }

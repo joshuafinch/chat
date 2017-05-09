@@ -9,7 +9,22 @@
 import Foundation
 import CoreData
 
-class CoreData {
+protocol PersistentContainerChangeDelegate: class {
+
+    func persistentContainerChanged(persistentContainer: NSPersistentContainer?)
+}
+
+protocol CoreDataProtocol {
+
+    var persistentContainer: NSPersistentContainer? { get }
+    
+    func add(persistentContainerChangeDelegate: PersistentContainerChangeDelegate)
+    func remove(persistentContainerChangeDelegate: PersistentContainerChangeDelegate)
+
+    func saveViewContext()
+}
+
+class CoreData: CoreDataProtocol {
     
     enum StoreType {
         case InMemory
@@ -18,10 +33,20 @@ class CoreData {
     
     typealias LoadedPersistentStoresHandler = (_ success: Bool) -> ()
     
-    private(set) var persistentContainer: NSPersistentContainer?
+    private(set) var persistentContainer: NSPersistentContainer? {
+        didSet {
+            weakDelegates.allObjects.forEach { (object) in
+                if let delegate = object as? PersistentContainerChangeDelegate {
+                    delegate.persistentContainerChanged(persistentContainer: persistentContainer)
+                }
+            }
+        }
+    }
     private let loadPersistentStoresCompletionHandler: LoadedPersistentStoresHandler
     
     private let name: String
+
+    private var weakDelegates = NSHashTable<AnyObject>.weakObjects()
     
     // MARK: -
     
@@ -34,28 +59,61 @@ class CoreData {
         var d: NSPersistentStoreDescription? = description
         
         if d == nil {
+            
             let description = NSPersistentStoreDescription()
             description.configuration = "Default"
+            description.shouldAddStoreAsynchronously = true
+            description.isReadOnly = false
+            description.shouldInferMappingModelAutomatically = true
+            description.shouldMigrateStoreAutomatically = true
             
             switch storeType {
             case .InMemory:
                 description.type = NSInMemoryStoreType
+                
             case .SQLite:
+                
+                let storeDirectory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+                let url = storeDirectory.appendingPathComponent("Chat.sqlite")
+                
                 description.type = NSSQLiteStoreType
+                description.url = url
             }
+            
             d = description
         }
         
-        self.persistentContainer = persistentContainer(persistentStoreDescriptions: [d!])
+        loadPersistentContainer(persistentStoreDescriptions: [d!])
     }
     
-    deinit {
-        
+    func saveViewContext() {
+
+        guard let persistentContainer = persistentContainer else {
+            return
+        }
+
+        persistentContainer.viewContext.perform {
+            do {
+                try persistentContainer.viewContext.save()
+            } catch let error {
+                print("Error saving view context: \(error)")
+            }
+        }
     }
-    
+
+    // MARK: - Delegates
+
+    func add(persistentContainerChangeDelegate: PersistentContainerChangeDelegate) {
+        weakDelegates.add(persistentContainerChangeDelegate)
+    }
+
+    func remove(persistentContainerChangeDelegate: PersistentContainerChangeDelegate) {
+        weakDelegates.remove(persistentContainerChangeDelegate)
+    }
+
     // MARK: - Private
     
-    private func persistentContainer(persistentStoreDescriptions: [NSPersistentStoreDescription]) -> NSPersistentContainer {
+    private func loadPersistentContainer(persistentStoreDescriptions: [NSPersistentStoreDescription]) {
         /*
          The persistent container for the application. This implementation
          creates and returns a container, having loaded the store for the
@@ -73,12 +131,15 @@ class CoreData {
                  * The device is out of space.
                  * The store could not be migrated to the current model version.
                  */
-                self?.loadPersistentStoresCompletionHandler(false)
+                self?.persistentContainer = nil
                 print("Load persistent stores error: \(error), \(error.userInfo)")
+                self?.loadPersistentStoresCompletionHandler(false)
             } else {
+                container.viewContext.automaticallyMergesChangesFromParent = true
+                self?.persistentContainer = container
                 self?.loadPersistentStoresCompletionHandler(true)
             }
         })
-        return container
+        return
     }
 }
