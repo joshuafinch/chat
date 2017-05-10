@@ -2,8 +2,8 @@
 //  AppDelegate.swift
 //  Chat
 //
-//  Created by Joshua Finch on 04/05/2017.
-//  Copyright © 2017 Joshua Finch. All rights reserved.
+//  Created by Sam Gaus on 04/05/2017.
+//  Copyright © 2017 Sam Gaus. All rights reserved.
 //
 
 import UIKit
