@@ -19,23 +19,17 @@ final class ChatViewController: UIViewController {
 
     var state: State? {
         didSet {
-            setupFetchedResultsController()
+            if let messagesView = messagesView {
+                setup(messagesView: messagesView)
+            }
         }
     }
-    
-    private(set) var tableView: UITableView?
-    private(set) var fetchedResultsController: NSFetchedResultsController<Message>?
+
+    let messageCellReuseIdentifier = "MessageCell"
+
+    private(set) var messagesView: MessagesView?
 
     private var toolbar: ChatInputToolbar?
-    
-    struct Change {
-        let type: NSFetchedResultsChangeType
-        let sectionIndex: Int?
-        let indexPath: IndexPath?
-        let newIndexPath: IndexPath?
-    }
-    
-    var changes: [Change] = []
     
     override var navigationItem: UINavigationItem {
         let navigationItem = super.navigationItem
@@ -51,39 +45,33 @@ final class ChatViewController: UIViewController {
         automaticallyAdjustsScrollViewInsets = false
 
         view = UIView()
-        
-        let tableView = UITableView()
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(tableView)
+        view.backgroundColor = UIColor.blue
+
+        let messagesView = MessagesView.view()
+        messagesView.backgroundColor = UIColor.purple
+        messagesView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(messagesView)
 
         let toolbar = ChatInputToolbar.view()
+        toolbar.backgroundColor = UIColor.green
         toolbar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(toolbar)
 
-        tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        tableView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: toolbar.topAnchor).isActive = true
-        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-
-        // Invert the table view so that new messages appear at the bottom
-        // We also must do the same for any dequeued table view cells so that they don't appear upside-down
-        tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
-
-        // Inset the table view content and scroll indicator so that it doesn't go under the navigation bar
-        let insets = UIEdgeInsetsMake(0, 0, 64, 0)
-        tableView.scrollIndicatorInsets = insets
-        tableView.contentInset = insets
+        messagesView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        messagesView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        messagesView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        messagesView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
 
         toolbar.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         toolbar.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         toolbar.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         toolbar.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
 
-        setupToolbar(toolbar: toolbar)
-        setupTableView(tableView: tableView)
+        setup(toolbar: toolbar)
+        setup(messagesView: messagesView)
     }
 
-    private func setupToolbar(toolbar: ChatInputToolbar) {
+    private func setup(toolbar: ChatInputToolbar) {
 
         toolbar.onPressedSend = { [weak self] in
             self?.onPressedSend()
@@ -92,12 +80,24 @@ final class ChatViewController: UIViewController {
         self.toolbar = toolbar
     }
 
-    private func setupTableView(tableView: UITableView) {
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "MessageCell")
-        tableView.reloadData()
-        self.tableView = tableView
+    private func setup(messagesView: MessagesView) {
+
+        self.messagesView = messagesView
+
+        guard let state = state else {
+            self.messagesView?.state = nil
+            return
+        }
+
+        messagesView.state = MessagesView.State(chatId: state.chatService.chatId,
+                                                senderId: state.chatService.senderId,
+                                                persistentContainer: state.persistentContainer)
+    }
+
+    // MARK: 
+
+    override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
+        messagesView?.collectionView.collectionViewLayout.invalidateLayout()
     }
 
     // MARK: Actions
@@ -107,10 +107,12 @@ final class ChatViewController: UIViewController {
         guard let state = state else {
             preconditionFailure("State must not be nil to add a message")
         }
-        
-        for _ in 0..<3 {
-            state.chatService.sendMessage(body: "Message: \(Date().timeIntervalSinceReferenceDate)")
-        }
+
+        state.chatService.receive(message: MessagePayload(id: NSUUID().uuidString,
+                                                          chatId: "chatId",
+                                                          senderId: "otherSenderId",
+                                                          body: "Message from other: \(Date().timeIntervalSinceReferenceDate)",
+                                                          timestamp: NSDate()))
     }
 
     // MARK: ChatInputToolbar
@@ -125,33 +127,8 @@ final class ChatViewController: UIViewController {
             return
         }
 
-        state.chatService.sendMessage(body: messageBody)
+        state.chatService.send(messageWithBody: messageBody)
         self.toolbar?.inputTextField?.text = nil
-    }
-
-    // MARK: - Private
-
-    private func setupFetchedResultsController() {
-        guard let state = state, let persistentContainer = state.persistentContainer else {
-            fetchedResultsController = nil
-            tableView?.reloadData()
-            return
-        }
-
-        fetchedResultsController = NSFetchedResultsController(
-            fetchRequest: Message.fetchRequest(forMessagesWithChatId: state.chatService.chatId),
-            managedObjectContext: persistentContainer.viewContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil)
-
-        fetchedResultsController?.delegate = self
-
-        do {
-            try fetchedResultsController?.performFetch()
-            tableView?.reloadData()
-        } catch let error {
-            print("Error: \(error)")
-        }
     }
 }
 

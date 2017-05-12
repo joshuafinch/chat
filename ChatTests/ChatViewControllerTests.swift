@@ -24,7 +24,7 @@ class ChatViewControllerTests: XCTestCase {
         chatViewController = ChatViewController()
         XCTAssertNil(chatViewController.state)
         XCTAssertNotNil(chatViewController.view)
-        XCTAssertNotNil(chatViewController.tableView)
+        XCTAssertNotNil(chatViewController.messagesView)
 
         let expect = expectation(description: "Loads in memory persistent stores successfully")
 
@@ -43,9 +43,9 @@ class ChatViewControllerTests: XCTestCase {
         let chatService = MockChatService(chatId: "chatId", senderId: "senderId")
         chatViewController.state = ChatViewController.State(chatService: chatService, persistentContainer: coreData.persistentContainer!)
 
-        XCTAssertNotNil(chatViewController.fetchedResultsController)
-        XCTAssertNotNil(chatViewController.fetchedResultsController!.delegate)
-        XCTAssert(chatViewController.fetchedResultsController!.delegate! === chatViewController)
+        XCTAssertNotNil(chatViewController.messagesView?.fetchedResultsController)
+        XCTAssertNotNil(chatViewController.messagesView?.fetchedResultsController?.delegate)
+        XCTAssert(chatViewController.messagesView!.fetchedResultsController!.delegate! === chatViewController.messagesView!)
     }
 
     // MARK: -
@@ -55,7 +55,7 @@ class ChatViewControllerTests: XCTestCase {
         let chatViewController = ChatViewController()
         XCTAssertNil(chatViewController.state)
         XCTAssertNotNil(chatViewController.view)
-        XCTAssertNotNil(chatViewController.tableView)
+        XCTAssertNotNil(chatViewController.messagesView)
     }
 
     func testViewControllerWithState_SetsUpFetchedRequestController() {
@@ -66,18 +66,6 @@ class ChatViewControllerTests: XCTestCase {
         let vc = chatViewController!
         vc.state = nil
 
-        XCTAssertNil(vc.fetchedResultsController)
-    }
-}
-
-// MARK: -
-
-fileprivate struct MockChatService: ChatServiceProtocol {
-
-    let chatId: String
-    let senderId: String
-
-    func sendMessage(body: String) {
-
+        XCTAssertNil(vc.messagesView?.fetchedResultsController)
     }
 }

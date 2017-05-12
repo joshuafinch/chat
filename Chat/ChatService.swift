@@ -13,7 +13,9 @@ protocol ChatServiceProtocol {
     var chatId: String { get }
     var senderId: String { get }
 
-    func sendMessage(body: String)
+    func send(messageWithBody body: String)
+
+    func receive(message: MessagePayload)
 }
 
 final class ChatService: ChatServiceProtocol {
@@ -30,7 +32,7 @@ final class ChatService: ChatServiceProtocol {
         self.messageImporter = messageImporter
     }
     
-    func sendMessage(body: String) {
+    func send(messageWithBody body: String) {
 
         let message = MessagePayload(id: NSUUID().uuidString,
                                      chatId: chatId,
@@ -38,6 +40,11 @@ final class ChatService: ChatServiceProtocol {
                                      body: body,
                                      timestamp: NSDate())
         
+        messageImporter.importMessage(message: message, completion: nil)
+    }
+
+    func receive(message: MessagePayload) {
+
         messageImporter.importMessage(message: message, completion: nil)
     }
 }

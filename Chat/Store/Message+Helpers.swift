@@ -25,7 +25,7 @@ extension Message {
         
         fetchRequest.predicate = NSPredicate(format: "chatId == %@", chatId)
         
-        let mostRecentMessageFirst = NSSortDescriptor(key: "timestamp", ascending: false)
+        let mostRecentMessageFirst = NSSortDescriptor(key: "timestamp", ascending: true)
         fetchRequest.sortDescriptors = [mostRecentMessageFirst]
         
         return fetchRequest
