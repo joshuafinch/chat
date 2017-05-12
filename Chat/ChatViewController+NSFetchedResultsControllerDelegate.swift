@@ -80,14 +80,25 @@ extension ChatViewController: NSFetchedResultsControllerDelegate {
                     }
                 }
             }
-            
-            let originalContentOffset = tableView.contentOffset
-            let newContentOffset = CGPoint(x: originalContentOffset.x, y: originalContentOffset.y + offsetY)
-            tableView.contentOffset = newContentOffset
+
+            if self.shouldPreventScrollingOnInsertOrUpdateOrDelete(inTableView: tableView) {
+                let originalContentOffset = tableView.contentOffset
+                let newContentOffset = CGPoint(x: originalContentOffset.x, y: originalContentOffset.y + offsetY)
+                tableView.contentOffset = newContentOffset
+            }
             
             tableView.endUpdates()
         }
         
         UIView.performWithoutAnimation(block)
+    }
+
+    private func shouldPreventScrollingOnInsertOrUpdateOrDelete(inTableView tableView: UITableView) -> Bool {
+        guard let visibleRows = tableView.indexPathsForVisibleRows else {
+            return false
+        }
+
+        let firstRowInMessagesSection = IndexPath(row: 0, section: 0)
+        return !visibleRows.contains(firstRowInMessagesSection)
     }
 }

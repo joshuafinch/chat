@@ -21,7 +21,8 @@ extension ChatViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "MessageCell")!
-        
+        cell.transform = CGAffineTransform(scaleX: 1, y: -1)
+
         if let message = fetchedResultsController?.object(at: indexPath) {
             cell.textLabel?.text = message.body
         }

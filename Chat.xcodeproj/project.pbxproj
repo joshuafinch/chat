@@ -33,6 +33,9 @@
 		12F73A221EC5241100789FA7 /* MockCoreDataMessageManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F73A211EC5241100789FA7 /* MockCoreDataMessageManaging.swift */; };
 		12F73A251EC526AD00789FA7 /* MockMessageImporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F73A241EC526AD00789FA7 /* MockMessageImporting.swift */; };
 		12F73A271EC526DD00789FA7 /* MockCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F73A261EC526DD00789FA7 /* MockCoreData.swift */; };
+		12F73A291EC5CDFC00789FA7 /* ChatInputToolbar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F73A281EC5CDFC00789FA7 /* ChatInputToolbar.xib */; };
+		12F73A2B1EC5CEDB00789FA7 /* ChatInputToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F73A2A1EC5CEDB00789FA7 /* ChatInputToolbar.swift */; };
+		12F73A311EC5D42A00789FA7 /* Bundle+ViewLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F73A301EC5D42A00789FA7 /* Bundle+ViewLoading.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +88,9 @@
 		12F73A211EC5241100789FA7 /* MockCoreDataMessageManaging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockCoreDataMessageManaging.swift; sourceTree = "<group>"; };
 		12F73A241EC526AD00789FA7 /* MockMessageImporting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockMessageImporting.swift; sourceTree = "<group>"; };
 		12F73A261EC526DD00789FA7 /* MockCoreData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockCoreData.swift; sourceTree = "<group>"; };
+		12F73A281EC5CDFC00789FA7 /* ChatInputToolbar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatInputToolbar.xib; sourceTree = "<group>"; };
+		12F73A2A1EC5CEDB00789FA7 /* ChatInputToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatInputToolbar.swift; sourceTree = "<group>"; };
+		12F73A301EC5D42A00789FA7 /* Bundle+ViewLoading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+ViewLoading.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +149,7 @@
 		1286A0EC1EBBDD3D00915633 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				12F73A2F1EC5D41E00789FA7 /* Extensions */,
 				123B4DE41EC4AF9C003BC147 /* Model */,
 				12D2B9E01EC26FEF0094461C /* Controller */,
 				12D2B9D71EC249F10094461C /* View */,
@@ -202,6 +209,7 @@
 		12D2B9D71EC249F10094461C /* View */ = {
 			isa = PBXGroup;
 			children = (
+				12F73A2C1EC5D14400789FA7 /* ChatInputToolbar */,
 				12D2B9D81EC24A020094461C /* ChatViewController.swift */,
 				12D2B9E31EC270870094461C /* ChatViewController+NSFetchedResultsControllerDelegate.swift */,
 				12D2B9DE1EC26FD60094461C /* ChatViewController+UITableViewDelegate.swift */,
@@ -228,6 +236,23 @@
 				12F73A261EC526DD00789FA7 /* MockCoreData.swift */,
 			);
 			name = Mocks;
+			sourceTree = "<group>";
+		};
+		12F73A2C1EC5D14400789FA7 /* ChatInputToolbar */ = {
+			isa = PBXGroup;
+			children = (
+				12F73A2A1EC5CEDB00789FA7 /* ChatInputToolbar.swift */,
+				12F73A281EC5CDFC00789FA7 /* ChatInputToolbar.xib */,
+			);
+			name = ChatInputToolbar;
+			sourceTree = "<group>";
+		};
+		12F73A2F1EC5D41E00789FA7 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				12F73A301EC5D42A00789FA7 /* Bundle+ViewLoading.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -341,6 +366,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1286A0FB1EBBDD3D00915633 /* LaunchScreen.storyboard in Resources */,
+				12F73A291EC5CDFC00789FA7 /* ChatInputToolbar.xib in Resources */,
 				1286A0F81EBBDD3D00915633 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -370,11 +396,13 @@
 				123B4DE61EC4AFB1003BC147 /* MessagePayload.swift in Sources */,
 				12D2B9E41EC270870094461C /* ChatViewController+NSFetchedResultsControllerDelegate.swift in Sources */,
 				12D2B9DF1EC26FD60094461C /* ChatViewController+UITableViewDelegate.swift in Sources */,
+				12F73A2B1EC5CEDB00789FA7 /* ChatInputToolbar.swift in Sources */,
 				1286A1201EBBE40A00915633 /* CoreData.swift in Sources */,
 				12D2B9D61EC119F40094461C /* main.swift in Sources */,
 				12D2B9E21EC26FF80094461C /* ChatService.swift in Sources */,
 				12D2B9CC1EBE43850094461C /* Model.xcdatamodeld in Sources */,
 				12D2B9CF1EBE43BB0094461C /* Message+CoreDataClass.swift in Sources */,
+				12F73A311EC5D42A00789FA7 /* Bundle+ViewLoading.swift in Sources */,
 				12D2B9D01EBE43BB0094461C /* Message+CoreDataProperties.swift in Sources */,
 				1286A0EE1EBBDD3D00915633 /* AppDelegate.swift in Sources */,
 				123B4DE31EC4AF29003BC147 /* CoreDataMessageManager.swift in Sources */,
