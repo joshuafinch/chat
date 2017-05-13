@@ -44,7 +44,6 @@
 		12F73A311EC5D42A00789FA7 /* Bundle+ViewLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F73A301EC5D42A00789FA7 /* Bundle+ViewLoading.swift */; };
 		12F73A341EC5F60400789FA7 /* MessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F73A331EC5F60400789FA7 /* MessagesView.swift */; };
 		12F73A361EC5F62600789FA7 /* MessagesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F73A351EC5F62600789FA7 /* MessagesView.xib */; };
-		12F73A391EC5FB5900789FA7 /* MessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F73A381EC5FB5900789FA7 /* MessageCell.xib */; };
 		12F73A3B1EC5FB7300789FA7 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F73A3A1EC5FB7300789FA7 /* MessageCell.swift */; };
 		12F73A3D1EC6093E00789FA7 /* MessagesViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F73A3C1EC6093E00789FA7 /* MessagesViewFlowLayout.swift */; };
 /* End PBXBuildFile section */
@@ -110,7 +109,6 @@
 		12F73A301EC5D42A00789FA7 /* Bundle+ViewLoading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+ViewLoading.swift"; sourceTree = "<group>"; };
 		12F73A331EC5F60400789FA7 /* MessagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesView.swift; sourceTree = "<group>"; };
 		12F73A351EC5F62600789FA7 /* MessagesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessagesView.xib; sourceTree = "<group>"; };
-		12F73A381EC5FB5900789FA7 /* MessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageCell.xib; sourceTree = "<group>"; };
 		12F73A3A1EC5FB7300789FA7 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		12F73A3C1EC6093E00789FA7 /* MessagesViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewFlowLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -307,7 +305,6 @@
 			isa = PBXGroup;
 			children = (
 				12F73A3A1EC5FB7300789FA7 /* MessageCell.swift */,
-				12F73A381EC5FB5900789FA7 /* MessageCell.xib */,
 			);
 			name = MessageCell;
 			sourceTree = "<group>";
@@ -422,7 +419,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				12F73A391EC5FB5900789FA7 /* MessageCell.xib in Resources */,
 				12F73A361EC5F62600789FA7 /* MessagesView.xib in Resources */,
 				1286A0FB1EBBDD3D00915633 /* LaunchScreen.storyboard in Resources */,
 				12CAA8DB1EC7DEB200B48654 /* MessageSectionHeaderView.xib in Resources */,

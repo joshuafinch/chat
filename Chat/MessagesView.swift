@@ -90,8 +90,7 @@ class MessagesView: UIView {
 
     private func setupCollectionView() {
 
-        let messageCellNib = UINib(nibName: "MessageCell", bundle: Bundle.main)
-        collectionView.register(messageCellNib, forCellWithReuseIdentifier: messageCellReuseIdentifier)
+        collectionView.register(MessageCell.self, forCellWithReuseIdentifier: messageCellReuseIdentifier)
 
         let messageSectionHeaderNib = UINib(nibName: "MessageSectionHeaderView", bundle: Bundle.main)
         collectionView.register(messageSectionHeaderNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: sectionHeaderReuseIdentifier)

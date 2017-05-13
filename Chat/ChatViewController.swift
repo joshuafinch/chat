@@ -71,6 +71,21 @@ final class ChatViewController: UIViewController {
         setup(messagesView: messagesView)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        NotificationCenter.default.addObserver(self, 
+                                               selector: #selector(invalidateMessagesViewLayout), 
+                                               name: Notification.Name.UIContentSizeCategoryDidChange, 
+                                               object: nil)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        NotificationCenter.default.removeObserver(self)
+    }
+
     private func setup(toolbar: ChatInputToolbar) {
 
         toolbar.onPressedSend = { [unowned self] text in
@@ -94,10 +109,15 @@ final class ChatViewController: UIViewController {
                                                 persistentContainer: state.persistentContainer)
     }
 
-    // MARK: 
+    // MARK:
 
     override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
+        invalidateMessagesViewLayout()
+    }
+
+    func invalidateMessagesViewLayout() {
         messagesView?.collectionView.collectionViewLayout.invalidateLayout()
+        messagesView?.collectionView.reloadData()
     }
 
     // MARK: Actions
