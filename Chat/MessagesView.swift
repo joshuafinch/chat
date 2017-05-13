@@ -27,6 +27,7 @@ class MessagesView: UIView {
     var changes: [FetchedResultsControllerChange] = []
 
     let messageCellReuseIdentifier = "MessageCell"
+    let sectionHeaderReuseIdentifier = "MessageSectionHeader"
 
     private(set) var fetchedResultsController: NSFetchedResultsController<Message>?
 
@@ -43,7 +44,17 @@ class MessagesView: UIView {
     }
 
     func numberOfObjects(inSection section: Int) -> Int {
-        return fetchedResultsController?.sections?[section].numberOfObjects ?? 0
+        guard let sections = fetchedResultsController?.sections, sections.count > section, section >= 0 else {
+            return 0
+        }
+        return sections[section].numberOfObjects
+    }
+
+    func sectionIdentifier(atIndexPath indexPath: IndexPath) -> String? {
+        guard let sections = fetchedResultsController?.sections, sections.count > indexPath.section, indexPath.section >= 0 else {
+            return nil
+        }
+        return sections[indexPath.section].name
     }
 
     func message(atIndexPath indexPath: IndexPath) -> Message? {
@@ -82,6 +93,9 @@ class MessagesView: UIView {
         let messageCellNib = UINib(nibName: "MessageCell", bundle: Bundle.main)
         collectionView.register(messageCellNib, forCellWithReuseIdentifier: messageCellReuseIdentifier)
 
+        let messageSectionHeaderNib = UINib(nibName: "MessageSectionHeaderView", bundle: Bundle.main)
+        collectionView.register(messageSectionHeaderNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: sectionHeaderReuseIdentifier)
+
         let navigationBarInset: CGFloat = 64.0
         let toolBarInset: CGFloat = 50.0
 
@@ -103,7 +117,7 @@ class MessagesView: UIView {
         fetchedResultsController = NSFetchedResultsController(
             fetchRequest: Message.fetchRequest(forMessagesWithChatId: state.chatId),
             managedObjectContext: persistentContainer.viewContext,
-            sectionNameKeyPath: nil,
+            sectionNameKeyPath: Message.Constants.sectionIdentifier.rawValue,
             cacheName: nil)
 
         fetchedResultsController?.delegate = self
@@ -122,12 +136,13 @@ class MessagesView: UIView {
             return nil
         }
 
-        let numberOfMessages = numberOfObjects(inSection: 0)
+        let lastSection = numberOfSections - 1
+        let numberOfMessages = numberOfObjects(inSection: lastSection)
         guard numberOfMessages > 0 else {
             return nil
         }
 
-        return IndexPath(item: numberOfMessages - 1, section: 0)
+        return IndexPath(item: numberOfMessages - 1, section: lastSection)
     }
 }
 

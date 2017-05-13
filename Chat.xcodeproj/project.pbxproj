@@ -23,6 +23,8 @@
 		12CAA8D21EC66DB200B48654 /* MessagesView+UICollectionViewDelegateFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CAA8D11EC66DB200B48654 /* MessagesView+UICollectionViewDelegateFlowLayout.swift */; };
 		12CAA8D41EC66DD100B48654 /* MessagesView+UICollectionViewDataSourcePrefetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CAA8D31EC66DD100B48654 /* MessagesView+UICollectionViewDataSourcePrefetching.swift */; };
 		12CAA8D61EC66DF200B48654 /* MessagesView+NSFetchedResultsControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CAA8D51EC66DF200B48654 /* MessagesView+NSFetchedResultsControllerDelegate.swift */; };
+		12CAA8D91EC7DEAA00B48654 /* MessageSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CAA8D81EC7DEAA00B48654 /* MessageSectionHeaderView.swift */; };
+		12CAA8DB1EC7DEB200B48654 /* MessageSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CAA8DA1EC7DEB200B48654 /* MessageSectionHeaderView.xib */; };
 		12CE8AD51EBE2463004C515F /* CoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CE8AD41EBE2463004C515F /* CoreDataTests.swift */; };
 		12D2B9CC1EBE43850094461C /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12D2B9CA1EBE43850094461C /* Model.xcdatamodeld */; };
 		12D2B9CF1EBE43BB0094461C /* Message+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D2B9CD1EBE43BB0094461C /* Message+CoreDataClass.swift */; };
@@ -31,7 +33,7 @@
 		12D2B9D61EC119F40094461C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D2B9D51EC119F40094461C /* main.swift */; };
 		12D2B9D91EC24A020094461C /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D2B9D81EC24A020094461C /* ChatViewController.swift */; };
 		12D2B9E21EC26FF80094461C /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D2B9E11EC26FF80094461C /* ChatService.swift */; };
-		12D2B9E41EC270870094461C /* ChatViewController+NSFetchedResultsControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D2B9E31EC270870094461C /* ChatViewController+NSFetchedResultsControllerDelegate.swift */; };
+		12D2B9E41EC270870094461C /* FetchedResultsControllerChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D2B9E31EC270870094461C /* FetchedResultsControllerChange.swift */; };
 		12F73A1E1EC4D7CB00789FA7 /* ChatViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F73A1D1EC4D7CB00789FA7 /* ChatViewControllerTests.swift */; };
 		12F73A201EC515B900789FA7 /* AppDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F73A1F1EC515B900789FA7 /* AppDelegateTests.swift */; };
 		12F73A221EC5241100789FA7 /* MockCoreDataMessageManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F73A211EC5241100789FA7 /* MockCoreDataMessageManaging.swift */; };
@@ -87,6 +89,8 @@
 		12CAA8D11EC66DB200B48654 /* MessagesView+UICollectionViewDelegateFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MessagesView+UICollectionViewDelegateFlowLayout.swift"; sourceTree = "<group>"; };
 		12CAA8D31EC66DD100B48654 /* MessagesView+UICollectionViewDataSourcePrefetching.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MessagesView+UICollectionViewDataSourcePrefetching.swift"; sourceTree = "<group>"; };
 		12CAA8D51EC66DF200B48654 /* MessagesView+NSFetchedResultsControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MessagesView+NSFetchedResultsControllerDelegate.swift"; sourceTree = "<group>"; };
+		12CAA8D81EC7DEAA00B48654 /* MessageSectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSectionHeaderView.swift; sourceTree = "<group>"; };
+		12CAA8DA1EC7DEB200B48654 /* MessageSectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageSectionHeaderView.xib; sourceTree = "<group>"; };
 		12CE8AD41EBE2463004C515F /* CoreDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTests.swift; sourceTree = "<group>"; };
 		12D2B9CB1EBE43850094461C /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		12D2B9CD1EBE43BB0094461C /* Message+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -95,7 +99,7 @@
 		12D2B9D51EC119F40094461C /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		12D2B9D81EC24A020094461C /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		12D2B9E11EC26FF80094461C /* ChatService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
-		12D2B9E31EC270870094461C /* ChatViewController+NSFetchedResultsControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ChatViewController+NSFetchedResultsControllerDelegate.swift"; sourceTree = "<group>"; };
+		12D2B9E31EC270870094461C /* FetchedResultsControllerChange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchedResultsControllerChange.swift; sourceTree = "<group>"; };
 		12F73A1D1EC4D7CB00789FA7 /* ChatViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewControllerTests.swift; sourceTree = "<group>"; };
 		12F73A1F1EC515B900789FA7 /* AppDelegateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateTests.swift; sourceTree = "<group>"; };
 		12F73A211EC5241100789FA7 /* MockCoreDataMessageManaging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockCoreDataMessageManaging.swift; sourceTree = "<group>"; };
@@ -139,6 +143,7 @@
 		123B4DE41EC4AF9C003BC147 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				12D2B9E31EC270870094461C /* FetchedResultsControllerChange.swift */,
 				123B4DE51EC4AFB1003BC147 /* MessagePayload.swift */,
 			);
 			name = Model;
@@ -214,6 +219,15 @@
 			path = Store;
 			sourceTree = "<group>";
 		};
+		12CAA8D71EC7DE9700B48654 /* SectionHeader */ = {
+			isa = PBXGroup;
+			children = (
+				12CAA8D81EC7DEAA00B48654 /* MessageSectionHeaderView.swift */,
+				12CAA8DA1EC7DEB200B48654 /* MessageSectionHeaderView.xib */,
+			);
+			name = SectionHeader;
+			sourceTree = "<group>";
+		};
 		12D2B9D41EC1187C0094461C /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -230,7 +244,6 @@
 				12F73A321EC5F5F900789FA7 /* MessagesView */,
 				12F73A2C1EC5D14400789FA7 /* ChatInputToolbar */,
 				12D2B9D81EC24A020094461C /* ChatViewController.swift */,
-				12D2B9E31EC270870094461C /* ChatViewController+NSFetchedResultsControllerDelegate.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -276,6 +289,7 @@
 		12F73A321EC5F5F900789FA7 /* MessagesView */ = {
 			isa = PBXGroup;
 			children = (
+				12CAA8D71EC7DE9700B48654 /* SectionHeader */,
 				12F73A371EC5FB4B00789FA7 /* MessageCell */,
 				12F73A331EC5F60400789FA7 /* MessagesView.swift */,
 				12CAA8D51EC66DF200B48654 /* MessagesView+NSFetchedResultsControllerDelegate.swift */,
@@ -411,6 +425,7 @@
 				12F73A391EC5FB5900789FA7 /* MessageCell.xib in Resources */,
 				12F73A361EC5F62600789FA7 /* MessagesView.xib in Resources */,
 				1286A0FB1EBBDD3D00915633 /* LaunchScreen.storyboard in Resources */,
+				12CAA8DB1EC7DEB200B48654 /* MessageSectionHeaderView.xib in Resources */,
 				12F73A291EC5CDFC00789FA7 /* ChatInputToolbar.xib in Resources */,
 				1286A0F81EBBDD3D00915633 /* Assets.xcassets in Resources */,
 			);
@@ -442,8 +457,9 @@
 				123B4DE61EC4AFB1003BC147 /* MessagePayload.swift in Sources */,
 				12F73A3D1EC6093E00789FA7 /* MessagesViewFlowLayout.swift in Sources */,
 				12F73A341EC5F60400789FA7 /* MessagesView.swift in Sources */,
-				12D2B9E41EC270870094461C /* ChatViewController+NSFetchedResultsControllerDelegate.swift in Sources */,
+				12D2B9E41EC270870094461C /* FetchedResultsControllerChange.swift in Sources */,
 				12CAA8D41EC66DD100B48654 /* MessagesView+UICollectionViewDataSourcePrefetching.swift in Sources */,
+				12CAA8D91EC7DEAA00B48654 /* MessageSectionHeaderView.swift in Sources */,
 				12F73A2B1EC5CEDB00789FA7 /* ChatInputToolbar.swift in Sources */,
 				1286A1201EBBE40A00915633 /* CoreData.swift in Sources */,
 				12D2B9D61EC119F40094461C /* main.swift in Sources */,

@@ -29,4 +29,13 @@ extension MessagesView: UICollectionViewDataSource {
 
         return cell
     }
+
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+
+        let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: sectionHeaderReuseIdentifier, for: indexPath) as! MessageSectionHeaderView
+
+        view.configure(withSectionIdentifier: sectionIdentifier(atIndexPath: indexPath))
+
+        return view
+    }
 }

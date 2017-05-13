@@ -1,5 +1,5 @@
 //
-//  ChatViewController+NSFetchedResultsControllerDelegate.swift
+//  FetchedResultsControllerChange.swift
 //  Chat
 //
 //  Created by Joshua Finch on 09/05/2017.

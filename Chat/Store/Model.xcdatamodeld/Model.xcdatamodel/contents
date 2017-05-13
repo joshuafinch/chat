@@ -4,6 +4,7 @@
         <attribute name="body" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="chatId" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="id" attributeType="String" syncable="YES"/>
+        <attribute name="sectionIdentifier" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
         <attribute name="senderId" attributeType="String" syncable="YES"/>
         <attribute name="timestamp" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <compoundIndexes>
@@ -19,6 +20,6 @@
         </uniquenessConstraints>
     </entity>
     <elements>
-        <element name="Message" positionX="-54" positionY="-9" width="128" height="120"/>
+        <element name="Message" positionX="-54" positionY="-9" width="128" height="135"/>
     </elements>
 </model>

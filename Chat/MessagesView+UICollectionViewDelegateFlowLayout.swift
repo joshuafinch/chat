@@ -17,4 +17,9 @@ extension MessagesView: UICollectionViewDelegateFlowLayout {
 
         return CGSize(width: maxWidth, height: 50.0)
     }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+
+        return CGSize(width: collectionView.bounds.size.width, height: 50.0)
+    }
 }
