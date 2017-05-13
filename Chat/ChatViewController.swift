@@ -73,8 +73,8 @@ final class ChatViewController: UIViewController {
 
     private func setup(toolbar: ChatInputToolbar) {
 
-        toolbar.onPressedSend = { [weak self] in
-            self?.onPressedSend()
+        toolbar.onPressedSend = { [unowned self] text in
+            self.onPressedSend(text: text)
         }
 
         self.toolbar = toolbar
@@ -117,18 +117,13 @@ final class ChatViewController: UIViewController {
 
     // MARK: ChatInputToolbar
 
-    func onPressedSend() {
+    func onPressedSend(text: String) {
 
         guard let state = state else {
             preconditionFailure("State must not be nil to send a message")
         }
 
-        guard let messageBody = self.toolbar?.inputTextField?.text else {
-            return
-        }
-
-        state.chatService.send(messageWithBody: messageBody)
-        self.toolbar?.inputTextField?.text = nil
+        state.chatService.send(messageWithBody: text)
     }
 }
 
