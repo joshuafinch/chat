@@ -30,19 +30,21 @@ final class ChatViewController: UIViewController {
     private(set) var messagesView: MessagesView?
 
     private var toolbar: ChatInputToolbar?
+    private var toolbarBottomConstraint: NSLayoutConstraint?
     
-    override var navigationItem: UINavigationItem {
-        let navigationItem = super.navigationItem
-        
-        let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addMessage))
-        navigationItem.rightBarButtonItem = add
-        
-        return navigationItem
-    }
-    
+//    override var navigationItem: UINavigationItem {
+//        let navigationItem = super.navigationItem
+//        
+//
+//        
+//        return navigationItem
+//    }
+
     override func loadView() {
 
         automaticallyAdjustsScrollViewInsets = false
+
+        title = "Chat"
 
         view = UIView()
         view.backgroundColor = UIColor.blue
@@ -64,11 +66,19 @@ final class ChatViewController: UIViewController {
 
         toolbar.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         toolbar.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        toolbar.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        toolbarBottomConstraint = toolbar.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        toolbarBottomConstraint?.isActive = true
         toolbar.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
 
         setup(toolbar: toolbar)
         setup(messagesView: messagesView)
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addMessage))
+        navigationItem.rightBarButtonItem = add
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -77,6 +87,26 @@ final class ChatViewController: UIViewController {
         NotificationCenter.default.addObserver(self, 
                                                selector: #selector(invalidateMessagesViewLayout), 
                                                name: Notification.Name.UIContentSizeCategoryDidChange, 
+                                               object: nil)
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow),
+                                               name: Notification.Name.UIKeyboardWillShow,
+                                               object: nil)
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardDidShow),
+                                               name: Notification.Name.UIKeyboardDidShow,
+                                               object: nil)
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: Notification.Name.UIKeyboardWillHide,
+                                               object: nil)
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardDidHide),
+                                               name: Notification.Name.UIKeyboardDidHide,
                                                object: nil)
     }
 
@@ -115,13 +145,64 @@ final class ChatViewController: UIViewController {
         invalidateMessagesViewLayout()
     }
 
+    // MARK: Notification Observers
+
     func invalidateMessagesViewLayout() {
         messagesView?.collectionView.collectionViewLayout.invalidateLayout()
         messagesView?.collectionView.reloadData()
     }
 
+    func keyboardWillHide(notification: Notification) {
+        handleKeyboard(notification: notification)
+    }
+
+    func keyboardDidHide(notification: Notification) {
+
+    }
+
+    func keyboardWillShow(notification: Notification) {
+        handleKeyboard(notification: notification)
+    }
+
+    func keyboardDidShow(notification: Notification) {
+
+    }
+
+    private func handleKeyboard(notification: Notification) {
+        guard let info = notification.userInfo else {
+            return
+        }
+
+        guard let endFrame = info[UIKeyboardFrameEndUserInfoKey] as? CGRect,
+            let beginFrame = info[UIKeyboardFrameBeginUserInfoKey] as? CGRect,
+            let duration = info[UIKeyboardAnimationDurationUserInfoKey] as? TimeInterval,
+            let curve = info[UIKeyboardAnimationCurveUserInfoKey] as? Int else {
+            return
+        }
+
+        let previousKeyboardHeight = toolbarBottomConstraint!.constant
+
+        let keyboardRect = view.convert(endFrame, from: nil)
+        let viewHeight = view.bounds.height
+        let keyboardMinY = keyboardRect.minY
+        let keyboardHeight = max(0.0, viewHeight - keyboardMinY)
+
+        if (beginFrame != endFrame || fabs(previousKeyboardHeight - toolbarBottomConstraint!.constant) > 0.0)
+        {
+            self.view.layoutIfNeeded()
+
+            let options = UIViewAnimationOptions(rawValue: UInt(curve << 16)).union([.beginFromCurrentState, .layoutSubviews])
+
+            self.toolbarBottomConstraint!.constant = -keyboardHeight
+
+            UIView.animate(withDuration: duration, delay: 0.0, options: options, animations: {
+                self.view.layoutIfNeeded()
+            }, completion: nil)
+        }
+    }
+
     // MARK: Actions
-    
+
     func addMessage() {
 
         guard let state = state else {
